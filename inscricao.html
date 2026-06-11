@@ -123,7 +123,12 @@ function atualizarRanges(){['avaliacao_alimentacao','qualidade_sono','nivel_estr
 async function carregarProtocolos(){
   const snapProt = await getDocs(collection(db,'protocolos'));
   protocolos = {};
-  snapProt.forEach(d => { protocolos[d.id] = d.data().v; });
+  snapProt.forEach(d => {
+    const dados = d.data().v || {};
+    // Garante que o ID real do documento do Firestore fique dentro do protocolo.
+    // Isso evita o aluno aparecer como "Sem protocolo" no Admin.
+    protocolos[d.id] = { ...dados, id: dados.id || d.id };
+  });
 
   const snapAlunos = await getDocs(collection(db,'alunos'));
   alunosExistentes = [];
@@ -133,12 +138,14 @@ async function carregarProtocolos(){
 function resolverProtocoloId(escolha){
   const lista = Object.values(protocolos);
   if(escolha === 'rota28_1'){
-    const p = lista.find(x => normalizar(x.nome).includes('rota281') || normalizar(x.nome).includes('rota28.1'));
-    return p?.id || 'rota28_1';
+    const p = lista.find(x => normalizar(x.nome).includes('rota281'));
+    if(!p) throw new Error('O protocolo Rota 28.1 ainda não foi encontrado no Admin.');
+    return p.id;
   }
   if(escolha === 'rota28_2'){
-    const p = lista.find(x => normalizar(x.nome).includes('rota282') || normalizar(x.nome).includes('rota28.2'));
-    return p?.id || 'rota28_2';
+    const p = lista.find(x => normalizar(x.nome).includes('rota282'));
+    if(!p) throw new Error('O protocolo Rota 28.2 ainda não foi encontrado no Admin.');
+    return p.id;
   }
   return escolha;
 }
