@@ -150,10 +150,20 @@ function resolverProtocoloId(escolha){
   return escolha;
 }
 
-function gerarCodigo(nome, telefone){
-  const primeiro = normalizar(nome).slice(0,10) || 'aluno';
-  const digitos = soNumeros(telefone).slice(-4) || String(Date.now()).slice(-4);
-  let base = `${primeiro}${digitos}`.toLowerCase();
+function partesNome(nome){
+  return String(nome||'')
+    .trim()
+    .split(/\s+/)
+    .map(function(p){ return normalizar(p); })
+    .filter(Boolean);
+}
+
+function gerarCodigo(nome){
+  const partes = partesNome(nome);
+  if(partes.length < 2){
+    throw new Error('Nome incompleto. Digite pelo menos nome e sobrenome. Exemplo: Maria Aparecida.');
+  }
+  let base = (partes[0] + partes[1]).toLowerCase();
   let codigo = base, i = 2;
   while(alunosExistentes.includes(codigo)){ codigo = base + i; i++; }
   return codigo;
@@ -167,8 +177,9 @@ $('form').addEventListener('submit', async (e)=>{
     const telefone = val('telefone');
     const protocoloEscolhido = val('protocolo');
     const protocoloId = resolverProtocoloId(protocoloEscolhido);
-    if(!nome || !telefone || !protocoloId) throw new Error('Preencha nome, WhatsApp e protocolo.');
-    const codigo = gerarCodigo(nome, telefone);
+    if(!nome || !telefone || !protocoloId) throw new Error('Preencha nome completo, WhatsApp e protocolo.');
+    if(partesNome(nome).length < 2) throw new Error('Nome incompleto. Digite pelo menos nome e sobrenome. Exemplo: Maria Aparecida.');
+    const codigo = gerarCodigo(nome);
     const id = 'aluno_' + Date.now();
     const protocoloNome = protocolos[protocoloId]?.nome || (protocoloEscolhido === 'rota28_1' ? 'Rota 28.1' : 'Rota 28.2');
     const anamnese = {
