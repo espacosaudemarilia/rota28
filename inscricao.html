@@ -92,8 +92,8 @@
         <label>Que tipo de aluno você é? *</label>
         <select id="tipo_aluno" required class="checkout-required">
           <option value="">Selecione...</option>
-          <option value="aluno_espaco_saude">Aluno Espaço Saúde - R$ 29,90</option>
-          <option value="aluno_online">Aluno Online - R$ 99,90</option>
+          <option value="aluno_espaco_saude">Aluno Espaço Saúde - R$ 69,90</option>
+          <option value="aluno_online">Aluno Online - R$ 109,90</option>
           <option value="aluno_hibrido">Aluno Híbrido - R$ 249,90</option>
         </select>
       </div>
@@ -137,14 +137,14 @@ function num(id){return Number($(id).value || 0);}
 const checkoutOpcoes = {
   aluno_espaco_saude: {
     nome: 'Aluno Espaço Saúde',
-    valor: 'R$ 29,90',
-    cartao: 'https://link.infinitepay.io/estudiofuncional/VC1D-7cUuenY5IL-29,90',
+    valor: 'R$ 69,90',
+    cartao: 'https://link.infinitepay.io/estudiofuncional/VC1DLTEtSQ-eJF8WUHRFH-69,90',
     mensagem: 'Esse modelo é para você que já faz parte do Espaço Saúde e quer participar do Rota 28. (Você terá acesso a todos os conteúdos do Rota 28 - treinos, materiais, avaliações, etc.)'
   },
   aluno_online: {
     nome: 'Aluno Online',
-    valor: 'R$ 99,90',
-    cartao: 'https://link.infinitepay.io/estudiofuncional/VC1D-3oFT2iR5Df-99,90',
+    valor: 'R$ 109,90',
+    cartao: 'https://link.infinitepay.io/estudiofuncional/VC1DLTEtSQ-ABHqnoXMk6-109,90',
     mensagem: 'Esse modelo é para você que mora em outra cidade ou que já tem algum lugar que já treina e quer participar do Rota 28. (Você terá acesso a todos os conteúdos do Rota 28 - treinos, materiais, avaliações, etc.)'
   },
   aluno_hibrido: {
